@@ -8,11 +8,13 @@ import connection.ConnectionListener;
 
 public class Client implements ConnectionListener
 {
-	public Client()
+	public static final int PORT = 6789;
+
+	public Client(String host, int port)
 	{
 		try
 		{
-			Socket socket = new Socket("localhost", 6789);
+			Socket socket = new Socket(host, port);
 			Connection connection = new Connection(socket, this);
 			Scanner scanner = new Scanner(System.in);
 			while (true)
@@ -37,7 +39,7 @@ public class Client implements ConnectionListener
 
 	public static void main(String[] args)
 	{
-		new Client();
+		new Client("localhost", PORT);
 	}
 
 	@Override

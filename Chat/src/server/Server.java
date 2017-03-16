@@ -11,6 +11,8 @@ import connection.ConnectionListener;
 
 public class Server implements Runnable, ConnectionListener
 {
+	public static final int PORT = 6789;
+
 	ServerSocket server;
 	List<Connection> connections = new ArrayList<>();
 
@@ -18,7 +20,7 @@ public class Server implements Runnable, ConnectionListener
 	{
 		try
 		{
-			server = new ServerSocket(port);
+			server = new ServerSocket(PORT);
 			new Thread(this).start();
 		}
 		catch (IOException e)
