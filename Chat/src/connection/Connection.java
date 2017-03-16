@@ -23,12 +23,12 @@ public class Connection implements Runnable
 		{
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
+			new Thread(this).start();
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-		new Thread(this).start();
 	}
 
 	public void send(Object object)
@@ -67,16 +67,6 @@ public class Connection implements Runnable
 		{
 			e.printStackTrace();
 		}
-	}
-
-	public void setSocketListener(ConnectionListener connectionListener)
-	{
-		this.connectionListener = connectionListener;
-	}
-
-	public boolean isRunnable()
-	{
-		return runnable;
 	}
 
 	public void setRunnable(boolean runnable)

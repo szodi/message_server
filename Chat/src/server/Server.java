@@ -3,8 +3,8 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import connection.Connection;
 import connection.ConnectionListener;
@@ -14,7 +14,7 @@ public class Server implements Runnable, ConnectionListener
 	public static final int PORT = 6789;
 
 	ServerSocket server;
-	List<Connection> connections = new ArrayList<>();
+	Set<Connection> connections = new HashSet<>();
 
 	public Server(int port)
 	{
@@ -37,8 +37,7 @@ public class Server implements Runnable, ConnectionListener
 			while (true)
 			{
 				Socket socket = server.accept();
-				Connection connection = new Connection(socket, this);
-				connections.add(connection);
+				connections.add(new Connection(socket, this));
 			}
 		}
 		catch (Exception e)
@@ -50,10 +49,7 @@ public class Server implements Runnable, ConnectionListener
 	@Override
 	public void processMessage(Connection connection, Object data)
 	{
-		for (Connection con : connections)
-		{
-			con.send(data);
-		}
+		connections.parallelStream().forEach((c) -> c.send(data));
 	}
 
 	@Override
