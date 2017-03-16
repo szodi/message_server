@@ -37,6 +37,10 @@ public class Connection implements Runnable
 		{
 			oos.writeObject(object);
 		}
+		catch (SocketException e)
+		{
+			connectionListener.disposeConnection(this);
+		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
@@ -72,5 +76,11 @@ public class Connection implements Runnable
 	public void setRunnable(boolean runnable)
 	{
 		this.runnable = runnable;
+	}
+
+	public synchronized void dispose()
+	{
+		runnable = false;
+		send("");
 	}
 }

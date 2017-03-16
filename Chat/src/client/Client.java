@@ -22,9 +22,7 @@ public class Client implements ConnectionListener
 				String message = scanner.nextLine();
 				if ("/q".equalsIgnoreCase(message))
 				{
-					System.out.println("quit");
-					connection.setRunnable(false);
-					connection.send(message);
+					connection.dispose();
 					break;
 				}
 				connection.send(message);
@@ -51,6 +49,6 @@ public class Client implements ConnectionListener
 	@Override
 	public void disposeConnection(Connection connection)
 	{
-		System.out.println("Server shut down");
+		System.out.println("Server is down");
 	}
 }
