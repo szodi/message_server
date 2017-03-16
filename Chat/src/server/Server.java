@@ -20,7 +20,7 @@ public class Server implements Runnable, ConnectionListener
 	{
 		try
 		{
-			server = new ServerSocket(PORT);
+			server = new ServerSocket(port);
 			new Thread(this).start();
 		}
 		catch (IOException e)
@@ -64,7 +64,7 @@ public class Server implements Runnable, ConnectionListener
 
 	public static void main(String[] args)
 	{
-		new Server(6789);
+		new Server(PORT);
 	}
 
 }
