@@ -54,11 +54,7 @@ public class Connection implements Runnable
 		{
 			while (runnable)
 			{
-				Object object = ois.readObject();
-				if (object != null)
-				{
-					connectionListener.processMessage(this, object);
-				}
+				connectionListener.processMessage(this, ois.readObject());
 			}
 			oos.close();
 			ois.close();
@@ -81,6 +77,6 @@ public class Connection implements Runnable
 	public synchronized void dispose()
 	{
 		runnable = false;
-		send("");
+		send(null);
 	}
 }

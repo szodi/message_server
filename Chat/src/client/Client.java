@@ -43,7 +43,10 @@ public class Client implements ConnectionListener
 	@Override
 	public void processMessage(Connection connection, Object data)
 	{
-		System.out.println(data);
+		if (data != null)
+		{
+			System.out.println(data);
+		}
 	}
 
 	@Override
