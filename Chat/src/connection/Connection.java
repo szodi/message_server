@@ -36,6 +36,7 @@ public class Connection implements Runnable
 		try
 		{
 			oos.writeObject(object);
+			oos.reset();
 		}
 		catch (SocketException e)
 		{

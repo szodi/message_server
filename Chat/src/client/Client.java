@@ -3,12 +3,14 @@ package client;
 import java.net.Socket;
 import java.util.Scanner;
 
+import common.User;
 import connection.Connection;
 import connection.ConnectionListener;
 
 public class Client implements ConnectionListener
 {
 	public static final int PORT = 6789;
+	User user = new User("Joe");
 
 	public Client(String host, int port)
 	{
@@ -25,7 +27,8 @@ public class Client implements ConnectionListener
 					connection.dispose();
 					break;
 				}
-				connection.send(message);
+				user.setMessage(message);
+				connection.send(user);
 			}
 			scanner.close();
 		}
@@ -45,7 +48,11 @@ public class Client implements ConnectionListener
 	{
 		if (data != null)
 		{
-			System.out.println(data);
+			if (data instanceof User)
+			{
+				User user = (User)data;
+				System.out.println("[" + user.getName() + "] " + user.getMessage());
+			}
 		}
 	}
 

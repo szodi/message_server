@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import common.User;
 import connection.Connection;
 import connection.ConnectionListener;
 
@@ -30,6 +31,8 @@ public class ChatGUI implements ConnectionListener
 	private Connection connection;
 
 	String msgHistory = "";
+
+	User user = new User("Joe");
 
 	public ChatGUI(String host, int port)
 	{
@@ -90,7 +93,7 @@ public class ChatGUI implements ConnectionListener
 			}
 		});
 		shell.setSize(450, 300);
-		shell.setText("SWT Application");
+		shell.setText(user.getName());
 
 		history = new Text(shell, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		history.setEditable(false);
@@ -104,7 +107,8 @@ public class ChatGUI implements ConnectionListener
 			{
 				if (event.detail == SWT.TRAVERSE_RETURN && !"".equals(message.getText()))
 				{
-					connection.send(message.getText());
+					user.setMessage(message.getText());
+					connection.send(user);
 				}
 			}
 		});
@@ -117,7 +121,8 @@ public class ChatGUI implements ConnectionListener
 			@Override
 			public void mouseDown(MouseEvent e)
 			{
-				connection.send(message.getText());
+				user.setMessage(message.getText());
+				connection.send(user);
 			}
 		});
 		btnSend.addKeyListener(new KeyAdapter()
@@ -125,7 +130,8 @@ public class ChatGUI implements ConnectionListener
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
-				connection.send(message.getText());
+				user.setMessage(message.getText());
+				connection.send(user);
 			}
 		});
 		btnSend.setBounds(349, 231, 75, 25);
@@ -152,7 +158,12 @@ public class ChatGUI implements ConnectionListener
 	{
 		if (data != null)
 		{
-			appendMessage((String)data);
+			if (data instanceof User)
+			{
+				User user = (User)data;
+				appendMessage("[" + user.getName() + "] " + user.getMessage());
+			}
+
 		}
 	}
 
