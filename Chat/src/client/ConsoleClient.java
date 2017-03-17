@@ -10,7 +10,7 @@ import connection.ConnectionListener;
 public class ConsoleClient implements ConnectionListener
 {
 	public static final int PORT = 6789;
-	User user = new User("Bill");
+	static User user = null;
 
 	public ConsoleClient(String host, int port)
 	{
@@ -43,6 +43,14 @@ public class ConsoleClient implements ConnectionListener
 
 	public static void main(String[] args)
 	{
+		if (args.length > 0)
+		{
+			user = new User(args[0]);
+		}
+		else
+		{
+			user = new User("User");
+		}
 		new ConsoleClient("localhost", PORT);
 	}
 
