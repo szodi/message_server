@@ -32,7 +32,7 @@ public class SWTClient implements ConnectionListener
 
 	String msgHistory = "";
 
-	User user = new User("Joszi");
+	User user = new User("Pista");
 
 	public SWTClient(String host, int port)
 	{
@@ -131,10 +131,13 @@ public class SWTClient implements ConnectionListener
 			@Override
 			public void mouseDown(MouseEvent e)
 			{
-				user.setMessage(message.getText());
-				if (connection != null)
+				if (!"".equals(message.getText()))
 				{
-					connection.send(user);
+					user.setMessage(message.getText());
+					if (connection != null)
+					{
+						connection.send(user);
+					}
 				}
 			}
 		});
@@ -143,10 +146,13 @@ public class SWTClient implements ConnectionListener
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
-				user.setMessage(message.getText());
-				if (connection != null)
+				if (!"".equals(message.getText()))
 				{
-					connection.send(user);
+					user.setMessage(message.getText());
+					if (connection != null)
+					{
+						connection.send(user);
+					}
 				}
 			}
 		});
