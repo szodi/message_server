@@ -7,12 +7,12 @@ import common.User;
 import connection.Connection;
 import connection.ConnectionListener;
 
-public class Client implements ConnectionListener
+public class ConsoleClient implements ConnectionListener
 {
 	public static final int PORT = 6789;
 	User user = new User("Bill");
 
-	public Client(String host, int port)
+	public ConsoleClient(String host, int port)
 	{
 		try
 		{
@@ -40,7 +40,7 @@ public class Client implements ConnectionListener
 
 	public static void main(String[] args)
 	{
-		new Client("localhost", PORT);
+		new ConsoleClient("localhost", PORT);
 	}
 
 	@Override

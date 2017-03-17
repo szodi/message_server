@@ -1,4 +1,4 @@
-package gui;
+package client;
 
 import java.net.Socket;
 
@@ -20,7 +20,7 @@ import common.User;
 import connection.Connection;
 import connection.ConnectionListener;
 
-public class ChatGUI implements ConnectionListener
+public class SWTClient implements ConnectionListener
 {
 	public static final int PORT = 6789;
 
@@ -32,9 +32,9 @@ public class ChatGUI implements ConnectionListener
 
 	String msgHistory = "";
 
-	User user = new User("Bill");
+	User user = new User("George");
 
-	public ChatGUI(String host, int port)
+	public SWTClient(String host, int port)
 	{
 		try
 		{
@@ -51,7 +51,7 @@ public class ChatGUI implements ConnectionListener
 	{
 		try
 		{
-			ChatGUI window = new ChatGUI("localhost", PORT);
+			SWTClient window = new SWTClient("localhost", PORT);
 			window.open();
 		}
 		catch (Exception e)
