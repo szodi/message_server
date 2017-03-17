@@ -32,7 +32,7 @@ public class ChatGUI implements ConnectionListener
 
 	String msgHistory = "";
 
-	User user = new User("Joe");
+	User user = new User("Bill");
 
 	public ChatGUI(String host, int port)
 	{
@@ -160,7 +160,7 @@ public class ChatGUI implements ConnectionListener
 		{
 			if (data instanceof User)
 			{
-				User user = (User)data;
+				User user = (User) data;
 				appendMessage("[" + user.getName() + "] " + user.getMessage());
 			}
 

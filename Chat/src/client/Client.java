@@ -10,7 +10,7 @@ import connection.ConnectionListener;
 public class Client implements ConnectionListener
 {
 	public static final int PORT = 6789;
-	User user = new User("Joe");
+	User user = new User("Bill");
 
 	public Client(String host, int port)
 	{
@@ -46,13 +46,10 @@ public class Client implements ConnectionListener
 	@Override
 	public void processMessage(Connection connection, Object data)
 	{
-		if (data != null)
+		if ((data != null) && (data instanceof User))
 		{
-			if (data instanceof User)
-			{
-				User user = (User)data;
-				System.out.println("[" + user.getName() + "] " + user.getMessage());
-			}
+			User user = (User) data;
+			System.out.println("[" + user.getName() + "] " + user.getMessage());
 		}
 	}
 

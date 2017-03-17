@@ -16,6 +16,8 @@ public class Connection implements Runnable
 
 	boolean runnable = true;
 
+	boolean active = true;
+
 	public Connection(Socket socket, ConnectionListener connectionListener)
 	{
 		this.connectionListener = connectionListener;
@@ -55,7 +57,18 @@ public class Connection implements Runnable
 		{
 			while (runnable)
 			{
-				connectionListener.processMessage(this, ois.readObject());
+				Object object = ois.readObject();
+				if (active)
+				{
+					connectionListener.processMessage(this, object);
+				}
+				else
+				{
+					synchronized (this)
+					{
+						wait();
+					}
+				}
 			}
 			oos.close();
 			ois.close();
@@ -79,5 +92,22 @@ public class Connection implements Runnable
 	{
 		runnable = false;
 		send(null);
+	}
+
+	public boolean isActive()
+	{
+		return active;
+	}
+
+	public void setActive(boolean active)
+	{
+		this.active = active;
+		if (active)
+		{
+			synchronized (this)
+			{
+				notify();
+			}
+		}
 	}
 }
