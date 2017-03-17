@@ -1,6 +1,6 @@
 package client;
 
-import java.net.Socket;
+import java.net.SocketException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import common.User;
 import connection.Connection;
+import connection.ConnectionFactory;
 import connection.ConnectionListener;
 
 public class SWTClient implements ConnectionListener
@@ -32,14 +32,17 @@ public class SWTClient implements ConnectionListener
 
 	String msgHistory = "";
 
-	User user = new User("George");
+	User user = new User("Joszi");
 
 	public SWTClient(String host, int port)
 	{
 		try
 		{
-			Socket socket = new Socket(host, port);
-			connection = new Connection(socket, this);
+			connection = ConnectionFactory.getConnection(host, port, this);
+		}
+		catch (SocketException e)
+		{
+			msgHistory = e.getMessage();
 		}
 		catch (Exception e)
 		{
@@ -89,7 +92,10 @@ public class SWTClient implements ConnectionListener
 			@Override
 			public void widgetDisposed(DisposeEvent arg0)
 			{
-				connection.dispose();
+				if (connection != null)
+				{
+					connection.dispose();
+				}
 			}
 		});
 		shell.setSize(450, 300);
@@ -98,6 +104,7 @@ public class SWTClient implements ConnectionListener
 		history = new Text(shell, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		history.setEditable(false);
 		history.setBounds(10, 10, 414, 215);
+		history.setText(msgHistory);
 
 		message = new Text(shell, SWT.BORDER);
 		message.addTraverseListener(new TraverseListener()
@@ -108,7 +115,10 @@ public class SWTClient implements ConnectionListener
 				if (event.detail == SWT.TRAVERSE_RETURN && !"".equals(message.getText()))
 				{
 					user.setMessage(message.getText());
-					connection.send(user);
+					if (connection != null)
+					{
+						connection.send(user);
+					}
 				}
 			}
 		});
@@ -122,7 +132,10 @@ public class SWTClient implements ConnectionListener
 			public void mouseDown(MouseEvent e)
 			{
 				user.setMessage(message.getText());
-				connection.send(user);
+				if (connection != null)
+				{
+					connection.send(user);
+				}
 			}
 		});
 		btnSend.addKeyListener(new KeyAdapter()
@@ -131,7 +144,10 @@ public class SWTClient implements ConnectionListener
 			public void keyPressed(KeyEvent e)
 			{
 				user.setMessage(message.getText());
-				connection.send(user);
+				if (connection != null)
+				{
+					connection.send(user);
+				}
 			}
 		});
 		btnSend.setBounds(349, 231, 75, 25);

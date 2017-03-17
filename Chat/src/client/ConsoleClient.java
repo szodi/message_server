@@ -1,10 +1,10 @@
 package client;
 
-import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
 
-import common.User;
 import connection.Connection;
+import connection.ConnectionFactory;
 import connection.ConnectionListener;
 
 public class ConsoleClient implements ConnectionListener
@@ -16,8 +16,7 @@ public class ConsoleClient implements ConnectionListener
 	{
 		try
 		{
-			Socket socket = new Socket(host, port);
-			Connection connection = new Connection(socket, this);
+			Connection connection = ConnectionFactory.getConnection(host, port, this);
 			Scanner scanner = new Scanner(System.in);
 			while (true)
 			{
@@ -31,6 +30,10 @@ public class ConsoleClient implements ConnectionListener
 				connection.send(user);
 			}
 			scanner.close();
+		}
+		catch (SocketException e)
+		{
+			System.out.println("Connection refused by the server. (Maybe full)");
 		}
 		catch (Exception e)
 		{
